@@ -4,6 +4,9 @@
  */
 package exshopping.view;
 
+import static exshopping.controller.AuthenticationController.loginUser;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author sanbid
@@ -38,8 +41,8 @@ public class LoginForm extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        username_input = new javax.swing.JTextField();
+        password_input = new javax.swing.JPasswordField();
         Login_btn = new javax.swing.JButton();
         forgot_btn = new javax.swing.JLabel();
 
@@ -54,6 +57,11 @@ public class LoginForm extends javax.swing.JFrame {
         about_btn.setText("About");
 
         Signup_btn.setText("Sign up");
+        Signup_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Signup_btnMouseClicked(evt);
+            }
+        });
 
         search_input.setFont(new java.awt.Font("SansSerif.plain", 0, 18)); // NOI18N
         search_input.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -74,11 +82,16 @@ public class LoginForm extends javax.swing.JFrame {
 
         jLabel9.setText("Enter your details below");
 
-        jTextField2.setText("username");
+        username_input.setText("username");
 
-        jPasswordField1.setText("jPasswordField1");
+        password_input.setText("jPasswordField1");
 
         Login_btn.setText("Login");
+        Login_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Login_btnMouseClicked(evt);
+            }
+        });
 
         forgot_btn.setText("Forgot Password");
 
@@ -104,11 +117,11 @@ public class LoginForm extends javax.swing.JFrame {
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 690, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel7)))
-                .addGap(47, 47, 47)
-                .addComponent(about_btn)
-                .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(about_btn)
+                        .addGap(46, 46, 46)
                         .addComponent(Signup_btn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
                         .addComponent(search_input, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -116,15 +129,16 @@ public class LoginForm extends javax.swing.JFrame {
                         .addComponent(search_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(101, 101, 101))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(79, 79, 79)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(password_input, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8)
                             .addComponent(jLabel9)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(Login_btn)
-                                .addGap(114, 114, 114)
-                                .addComponent(forgot_btn)))
+                                .addGap(140, 140, 140)
+                                .addComponent(forgot_btn))
+                            .addComponent(username_input, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -157,10 +171,10 @@ public class LoginForm extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel9)))
-                        .addGap(69, 69, 69)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44)
-                        .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(64, 64, 64)
+                        .addComponent(username_input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49)
+                        .addComponent(password_input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(62, 62, 62)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Login_btn)
@@ -174,6 +188,40 @@ public class LoginForm extends javax.swing.JFrame {
     private void search_inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_inputActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_search_inputActionPerformed
+
+    private void Login_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Login_btnMouseClicked
+        // TODO add your handling code here:
+		String username = username_input.getText().trim();
+		String password = new String(password_input.getPassword());
+
+		// Validation
+		if (username.isEmpty() || password.isEmpty()) {
+			JOptionPane.showMessageDialog(this,
+					"Username and password cannot be blank",
+					"Login Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		// Attempt login
+		if (loginUser(username, password)) {
+			JOptionPane.showMessageDialog(this, "Login Successful!");
+			// TODO: Open main application window
+			new HomeFrame().setVisible(true);
+			this.dispose(); // Close login form
+		} else {
+			JOptionPane.showMessageDialog(this,
+					"Invalid username or password",
+					"Login Failed",
+					JOptionPane.ERROR_MESSAGE);
+		}
+    }//GEN-LAST:event_Login_btnMouseClicked
+
+    private void Signup_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Signup_btnMouseClicked
+        // TODO add your handling code here:
+		new RegisterForm().setVisible(true);
+		this.dispose();
+    }//GEN-LAST:event_Signup_btnMouseClicked
 
 	/**
 	 * @param args the command line arguments
@@ -222,10 +270,10 @@ public class LoginForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JLabel logo_label;
+    public javax.swing.JPasswordField password_input;
     public javax.swing.JButton search_btn;
     public javax.swing.JTextField search_input;
+    public javax.swing.JTextField username_input;
     // End of variables declaration//GEN-END:variables
 }

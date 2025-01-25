@@ -68,8 +68,8 @@
                       <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
                       <Component id="about_btn" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
-                      <Component id="Signup_btn" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="105" max="32767" attributes="0"/>
+                      <Component id="Login2_btn" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="131" max="32767" attributes="0"/>
                       <Component id="search_input" min="-2" pref="281" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="search_btn" min="-2" pref="67" max="-2" attributes="0"/>
@@ -93,7 +93,7 @@
                       <Component id="Home_btn" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="contact_btn" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="about_btn" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="Signup_btn" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="Login2_btn" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -163,10 +163,13 @@
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
       </AuxValues>
     </Component>
-    <Component class="javax.swing.JLabel" name="Signup_btn">
+    <Component class="javax.swing.JLabel" name="Login2_btn">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Sign up"/>
+        <Property name="text" type="java.lang.String" value="Login"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="Login2_btnMouseClicked"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
       </AuxValues>
@@ -237,6 +240,7 @@
         <Property name="text" type="java.lang.String" value="Create account"/>
       </Properties>
       <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="register_btnMouseClicked"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="register_btnActionPerformed"/>
       </Events>
       <AuxValues>
@@ -247,6 +251,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Already have an account?"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="login_btnMouseClicked"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
       </AuxValues>

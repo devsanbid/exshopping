@@ -4,11 +4,7 @@
  */
 package exshopping;
 
-import exshopping.view.RegisterForm;
-import java.awt.Font;
-import javax.swing.SwingUtilities;
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
+import exshopping.view.HomeFrame;
 
 /**
  *
@@ -20,29 +16,30 @@ public class ExShopping {
 	 * @param args the command line arguments
 	 */
 	public static void main(String[] args) {
-		RegisterForm addcart = new RegisterForm();
-		try {
-
-			UIDefaults defaults = UIManager.getDefaults();
-			Font universalFont = new Font("Arial", Font.PLAIN, 28);
-
-			String[] componentTypes = {
-				"Label", "TextField", "Button", "PasswordField",
-				"ComboBox", "RadioButton", "CheckBox", "Menu",
-				"MenuItem", "Table", "Tree"
-			};
-
-			for (String component : componentTypes) {
-				defaults.put(component + ".font", universalFont);
-			}
-
-			SwingUtilities.updateComponentTreeUI(addcart);
-
-		}catch (Exception ex){
-			System.err.println("Failed to initialize LaF");
-		}
-
+		HomeFrame addcart = new HomeFrame();
 		addcart.setVisible(true);
-	}
-	
+//		try {
+
+//			UIDefaults defaults = UIManager.getDefaults();
+
+//			Font universalFont = new Font("Arial", Font.PLAIN, 28);
+
+//			String[] componentTypes = {
+//				"Label", "TextField", "Button", "PasswordField",
+//				"ComboBox", "RadioButton", "CheckBox", "Menu",
+//				"MenuItem", "Table", "Tree"
+//			};
+//
+//			for (String component : componentTypes) {
+//				defaults.put(component + ".font", universalFont);
+//			}
+//
+//			SwingUtilities.updateComponentTreeUI(addcart);
+//
+//		}catch (Exception ex){;
+//			System.err.println("Failed to initialize LaF");
+//		}
+//	
 }
+}
+

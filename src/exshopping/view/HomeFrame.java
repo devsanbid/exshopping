@@ -4,6 +4,15 @@
  */
 package exshopping.view;
 
+import exshopping.controller.Product;
+import exshopping.controller.ProductController;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.util.List;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
 /**
  *
  * @author sanbid
@@ -15,6 +24,7 @@ public class HomeFrame extends javax.swing.JFrame {
 	 */
 	public HomeFrame() {
 		initComponents();
+		displayProducts();
 	}
 
 	/**
@@ -47,6 +57,7 @@ public class HomeFrame extends javax.swing.JFrame {
         product_image = new javax.swing.JLabel();
         product_name = new javax.swing.JLabel();
         product_prices = new javax.swing.JLabel();
+        addcart_product_1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
@@ -130,9 +141,17 @@ public class HomeFrame extends javax.swing.JFrame {
 
         product_prices.setText("prices");
 
+        addcart_product_1.setText("Add Cart");
+        addcart_product_1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addcart_product_1ActionPerformed(evt);
+            }
+        });
+
         product_frame.setLayer(product_image, javax.swing.JLayeredPane.DEFAULT_LAYER);
         product_frame.setLayer(product_name, javax.swing.JLayeredPane.DEFAULT_LAYER);
         product_frame.setLayer(product_prices, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        product_frame.setLayer(addcart_product_1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout product_frameLayout = new javax.swing.GroupLayout(product_frame);
         product_frame.setLayout(product_frameLayout);
@@ -147,7 +166,8 @@ public class HomeFrame extends javax.swing.JFrame {
                         .addGap(25, 25, 25)
                         .addGroup(product_frameLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(product_prices)
-                            .addComponent(product_name))))
+                            .addComponent(product_name)
+                            .addComponent(addcart_product_1))))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         product_frameLayout.setVerticalGroup(
@@ -159,7 +179,9 @@ public class HomeFrame extends javax.swing.JFrame {
                 .addComponent(product_name)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(product_prices)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(addcart_product_1)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout product_panelLayout = new javax.swing.GroupLayout(product_panel);
@@ -169,14 +191,14 @@ public class HomeFrame extends javax.swing.JFrame {
             .addGroup(product_panelLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(product_frame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(1005, Short.MAX_VALUE))
+                .addContainerGap(1002, Short.MAX_VALUE))
         );
         product_panelLayout.setVerticalGroup(
             product_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(product_panelLayout.createSequentialGroup()
                 .addGap(42, 42, 42)
                 .addComponent(product_frame, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         jScrollPane1.setViewportView(product_panel);
@@ -292,37 +314,69 @@ public class HomeFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_Electronic_btnActionPerformed
 
+    private void addcart_product_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addcart_product_1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addcart_product_1ActionPerformed
+
+	public void displayProducts() {
+		product_frame.removeAll();
+
+		List<Product> products = ProductController.fetchAllProducts();
+		System.out.print(products);
+
+		// Set layout for dynamic product display
+		product_frame.setLayout(new GridLayout(0, 3, 10, 10)); // 3 columns, with gaps
+
+		for (Product product : products) {
+			// Create a panel for each product
+			JPanel productPanel = new JPanel();
+			productPanel.setLayout(new BorderLayout());
+
+			// Product Name
+			JLabel nameLabel = new JLabel(product.getProductName());
+			nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+			// Product Price
+			JLabel priceLabel = new JLabel("$" + String.format("%.2f", product.getPrice()));
+			priceLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+			// Product Image
+			ImageIcon imageIcon = new ImageIcon(System.getProperty("user.dir") + "/product_images/" + product.getImagePath());
+			Image scaledImage = imageIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+			JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
+
+			// Add to Cart Button
+			JButton addToCartButton = new JButton("Add to Cart");
+			addToCartButton.addActionListener(e -> {
+				// Implement add to cart logic here
+				// You can call a method from your CartController
+			});
+
+			// Assemble product panel
+			productPanel.add(nameLabel, BorderLayout.NORTH);
+			productPanel.add(imageLabel, BorderLayout.CENTER);
+			productPanel.add(priceLabel, BorderLayout.SOUTH);
+			productPanel.add(addToCartButton, BorderLayout.EAST);
+
+			// Add to main product frame
+			product_frame.add(productPanel);
+		}
+
+		// Refresh the frame
+		product_frame.revalidate();
+		product_frame.repaint();
+	}
+
 	/**
 	 * @param args the command line arguments
 	 */
 	public static void main(String args[]) {
-		/* Set the Nimbus look and feel */
-		//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-		/* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-		 */
-		try {
-			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-				if ("Nimbus".equals(info.getName())) {
-					javax.swing.UIManager.setLookAndFeel(info.getClassName());
-					break;
-				}
-			}
-		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(HomeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(HomeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(HomeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(HomeFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		}
-		//</editor-fold>
 
 		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				new HomeFrame().setVisible(true);
+				HomeFrame hf = new HomeFrame();
+				hf.setVisible(true);
 			}
 		});
 	}
@@ -333,6 +387,7 @@ public class HomeFrame extends javax.swing.JFrame {
     private javax.swing.JButton Man_btn;
     public javax.swing.JLabel about_btn;
     public javax.swing.JButton addcart_btn1;
+    private javax.swing.JButton addcart_product_1;
     public javax.swing.JLabel contact_btn;
     private javax.swing.JButton jButton1;
     private javax.swing.JFrame jFrame1;

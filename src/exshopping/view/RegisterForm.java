@@ -4,6 +4,10 @@
  */
 package exshopping.view;
 
+import exshopping.controller.AuthenticationController;
+import exshopping.model.DatabaseConnection;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author sanbid
@@ -30,7 +34,7 @@ public class RegisterForm extends javax.swing.JFrame {
         Home_btn = new javax.swing.JLabel();
         contact_btn = new javax.swing.JLabel();
         about_btn = new javax.swing.JLabel();
-        Signup_btn = new javax.swing.JLabel();
+        Login2_btn = new javax.swing.JLabel();
         search_input = new javax.swing.JTextField();
         search_btn = new javax.swing.JButton();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0));
@@ -54,7 +58,12 @@ public class RegisterForm extends javax.swing.JFrame {
 
         about_btn.setText("About");
 
-        Signup_btn.setText("Sign up");
+        Login2_btn.setText("Login");
+        Login2_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Login2_btnMouseClicked(evt);
+            }
+        });
 
         search_input.setFont(new java.awt.Font("SansSerif.plain", 0, 18)); // NOI18N
         search_input.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -80,6 +89,11 @@ public class RegisterForm extends javax.swing.JFrame {
         jPasswordField1.setText("jPasswordField1");
 
         register_btn.setText("Create account");
+        register_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                register_btnMouseClicked(evt);
+            }
+        });
         register_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 register_btnActionPerformed(evt);
@@ -87,6 +101,11 @@ public class RegisterForm extends javax.swing.JFrame {
         });
 
         login_btn.setText("Already have an account?");
+        login_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                login_btnMouseClicked(evt);
+            }
+        });
 
         name_input.setText("name");
         name_input.addActionListener(new java.awt.event.ActionListener() {
@@ -136,8 +155,8 @@ public class RegisterForm extends javax.swing.JFrame {
                         .addGap(47, 47, 47)
                         .addComponent(about_btn)
                         .addGap(46, 46, 46)
-                        .addComponent(Signup_btn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
+                        .addComponent(Login2_btn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
                         .addComponent(search_input, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(search_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -156,7 +175,7 @@ public class RegisterForm extends javax.swing.JFrame {
                         .addComponent(Home_btn)
                         .addComponent(contact_btn)
                         .addComponent(about_btn)
-                        .addComponent(Signup_btn)))
+                        .addComponent(Login2_btn)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,33 +220,67 @@ public class RegisterForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_register_btnActionPerformed
 
+    private void register_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_register_btnMouseClicked
+        // TODO add your handling code here:
+		String name = name_input.getText().trim();
+		String username = username_input.getText().trim();
+		String password = new String(jPasswordField1.getPassword());
+
+		// Validation checks
+		if (name.isEmpty()) {
+			JOptionPane.showMessageDialog(this, "Name cannot be blank", "Validation Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		if (username.isEmpty()) {
+			JOptionPane.showMessageDialog(this, "Username cannot be blank", "Validation Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		if (password.length() < 5) {
+			JOptionPane.showMessageDialog(this, "Password must be at least 5 characters long", "Validation Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
+		// Attempt registration
+		boolean registrationSuccess = AuthenticationController.registerUser(name, username, password);
+
+		if (registrationSuccess) {
+			JOptionPane.showMessageDialog(this, "Registration Successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+			new LoginForm().setVisible(true);
+			this.dispose();
+			clearFields();
+		} else {
+			JOptionPane.showMessageDialog(this, "Registration Failed. Username might already exist.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
+    }//GEN-LAST:event_register_btnMouseClicked
+
+    private void Login2_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Login2_btnMouseClicked
+        // TODO add your handling code here:
+		new LoginForm().setVisible(true);
+		this.dispose();
+    }//GEN-LAST:event_Login2_btnMouseClicked
+
+    private void login_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_login_btnMouseClicked
+        // TODO add your handling code here:
+		new LoginForm().setVisible(true);
+		this.dispose();
+    }//GEN-LAST:event_login_btnMouseClicked
+
+	private void clearFields() {
+		name_input.setText("");
+		username_input.setText("");
+		jPasswordField1.setText("");
+	}
+
+
+
 	/**
 	 * @param args the command line arguments
 	 */
 	public static void main(String args[]) {
-		/* Set the Nimbus look and feel */
-		//<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-		/* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-		 */
-		try {
-			for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-				if ("Nimbus".equals(info.getName())) {
-					javax.swing.UIManager.setLookAndFeel(info.getClassName());
-					break;
-				}
-			}
-		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(RegisterForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(RegisterForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(RegisterForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (javax.swing.UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(RegisterForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-		}
-		//</editor-fold>
-		//</editor-fold>
+		DatabaseConnection.initializeDatabase();
 
 		/* Create and display the form */
 		java.awt.EventQueue.invokeLater(new Runnable() {
@@ -239,7 +292,7 @@ public class RegisterForm extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JLabel Home_btn;
-    public javax.swing.JLabel Signup_btn;
+    public javax.swing.JLabel Login2_btn;
     public javax.swing.JLabel about_btn;
     public javax.swing.JLabel contact_btn;
     private javax.swing.Box.Filler filler1;
