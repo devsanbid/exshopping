@@ -4,8 +4,10 @@
  */
 package exshopping;
 
-import com.formdev.flatlaf.FlatLightLaf;
-import exshopping.view.SettingFrame;
+import exshopping.view.RegisterForm;
+import java.awt.Font;
+import javax.swing.SwingUtilities;
+import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
 /**
@@ -18,12 +20,28 @@ public class ExShopping {
 	 * @param args the command line arguments
 	 */
 	public static void main(String[] args) {
+		RegisterForm addcart = new RegisterForm();
 		try {
-			UIManager.setLookAndFeel( new FlatLightLaf() );
+
+			UIDefaults defaults = UIManager.getDefaults();
+			Font universalFont = new Font("Arial", Font.PLAIN, 28);
+
+			String[] componentTypes = {
+				"Label", "TextField", "Button", "PasswordField",
+				"ComboBox", "RadioButton", "CheckBox", "Menu",
+				"MenuItem", "Table", "Tree"
+			};
+
+			for (String component : componentTypes) {
+				defaults.put(component + ".font", universalFont);
+			}
+
+			SwingUtilities.updateComponentTreeUI(addcart);
+
 		}catch (Exception ex){
 			System.err.println("Failed to initialize LaF");
 		}
-		SettingFrame addcart = new SettingFrame();
+
 		addcart.setVisible(true);
 	}
 	
