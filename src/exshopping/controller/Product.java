@@ -18,7 +18,7 @@ public class Product {
 	private String category;
 
 	public Product(int productId, String productName, double price, String description,
-			String imagePath, double stockQuantity, String category) {
+			String imagePath, double stockQuantity, String category ) {
 		this.productId = productId;
 		this.productName = productName;
 		this.price = price;
@@ -48,6 +48,7 @@ public class Product {
 	public String getImagePath() {
 		return imagePath;
 	}
+
 
 	public double getStockQuantity() {
 		return stockQuantity;

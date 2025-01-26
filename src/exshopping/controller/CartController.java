@@ -1,5 +1,6 @@
 package exshopping.controller;
 
+import exshopping.model.CartItem;
 import exshopping.model.DatabaseConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,54 +10,37 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
-// CartItem class definition
-class CartItem {
-
-	private int cartId;
-	private int productId;
-	private String productName;
-	private double price;
-	private int quantity;
-	private String productImage; // Added product image path
-
-	public CartItem(int cartId, int productId, String productName, double price, int quantity, String productImage) {
-		this.cartId = cartId;
-		this.productId = productId;
-		this.productName = productName;
-		this.price = price;
-		this.quantity = quantity;
-		this.productImage = productImage;
-	}
-
-	// Getters
-	public int getCartId() {
-		return cartId;
-	}
-
-	public int getProductId() {
-		return productId;
-	}
-
-	public String getProductName() {
-		return productName;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public int getQuantity() {
-		return quantity;
-	}
-
-	public String getProductImage() {
-		return productImage;
-	}
-}
-
 public class CartController {
 
-	public static void addToCart(int userId, int productId, int quantity) {
+	public static void clearAllCartData() {
+		try (Connection conn = DatabaseConnection.getConnection()) {
+			String query = "TRUNCATE TABLE cart";
+			PreparedStatement pstmt = conn.prepareStatement(query);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	};
+
+	public static void removeCartItem(int cartId) {
+
+		// Get product details to remove from cart
+		int userId = AuthenticationController.getUserId();
+
+		// Remove from database cart
+		try (Connection conn = DatabaseConnection.getConnection()) {
+			String query = "DELETE FROM cart WHERE user_id = ? AND cart_id = ?";
+			PreparedStatement pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, userId);
+			pstmt.setInt(2, cartId);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public static void addToCart(int userId, int productId, double quantity) {
 		try (Connection conn = DatabaseConnection.getConnection()) {
 			// Verify user exists
 			String userCheckQuery = "SELECT COUNT(*) FROM users WHERE id = ?";
@@ -80,11 +64,11 @@ public class CartController {
 			if (rs.next()) {
 				// Update existing cart item
 				int cartId = rs.getInt("cart_id");
-				int existingQuantity = rs.getInt("quantity");
+				double existingQuantity = rs.getDouble("quantity");
 
 				String updateQuery = "UPDATE cart SET quantity=? WHERE cart_id=?";
 				PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
-				updateStmt.setInt(1, existingQuantity + quantity);
+				updateStmt.setDouble(1, existingQuantity + quantity);
 				updateStmt.setInt(2, cartId);
 				updateStmt.executeUpdate();
 			} else {
@@ -93,7 +77,7 @@ public class CartController {
 				PreparedStatement insertStmt = conn.prepareStatement(insertQuery);
 				insertStmt.setInt(1, userId);
 				insertStmt.setInt(2, productId);
-				insertStmt.setInt(3, quantity);
+				insertStmt.setDouble(3, quantity);
 				insertStmt.executeUpdate();
 			}
 

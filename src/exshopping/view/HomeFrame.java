@@ -4,11 +4,20 @@
  */
 package exshopping.view;
 
+import exshopping.controller.AuthenticationController;
+import exshopping.controller.CartController;
 import exshopping.controller.Product;
 import exshopping.controller.ProductController;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.io.File;
 import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -328,35 +337,45 @@ public class HomeFrame extends javax.swing.JFrame {
 		product_frame.setLayout(new GridLayout(0, 3, 10, 10)); // 3 columns, with gaps
 
 		for (Product product : products) {
+
 			// Create a panel for each product
 			JPanel productPanel = new JPanel();
 			productPanel.setLayout(new BorderLayout());
 
+			productPanel.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25)); // 10px top/bottom, 15px left/right
+
+			File baseDir = new File(".");
+			ImageIcon imageIcon = new ImageIcon(baseDir.getAbsolutePath() + "/src/exshopping/product_images/" + product.getImagePath());
+			Image scaledImage = imageIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+			JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
+			imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
 			// Product Name
 			JLabel nameLabel = new JLabel(product.getProductName());
-			nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
 			// Product Price
 			JLabel priceLabel = new JLabel("$" + String.format("%.2f", product.getPrice()));
 			priceLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+
 			// Product Image
-			ImageIcon imageIcon = new ImageIcon(System.getProperty("user.dir") + "/product_images/" + product.getImagePath());
-			Image scaledImage = imageIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
-			JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
 
 			// Add to Cart Button
 			JButton addToCartButton = new JButton("Add to Cart");
+			addToCartButton.setPreferredSize(new Dimension(150, 40));
 			addToCartButton.addActionListener(e -> {
-				// Implement add to cart logic here
-				// You can call a method from your CartController
+				int userID = AuthenticationController.getUserId();
+				CartController.addToCart(userID, product.getProductId(), 1);
 			});
 
+
 			// Assemble product panel
-			productPanel.add(nameLabel, BorderLayout.NORTH);
-			productPanel.add(imageLabel, BorderLayout.CENTER);
-			productPanel.add(priceLabel, BorderLayout.SOUTH);
-			productPanel.add(addToCartButton, BorderLayout.EAST);
+			productPanel.setBackground(new Color(0x26, 0x26, 0x26)); // Dark gray background
+			productPanel.add(imageLabel, BorderLayout.NORTH);
+			productPanel.add(nameLabel, BorderLayout.CENTER);
+			productPanel.add(priceLabel, BorderLayout.EAST);
+			productPanel.add(addToCartButton, BorderLayout.SOUTH);
 
 			// Add to main product frame
 			product_frame.add(productPanel);

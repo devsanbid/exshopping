@@ -15,6 +15,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AuthenticationController {
+ private static int currentUserId = 1;
+
+
+
+ public static int getUserId(){
+	 return currentUserId;
+ };
+
 	// User Registration Method
 
 	public static boolean registerUser(String name, String username, String password) {
@@ -54,7 +62,12 @@ public class AuthenticationController {
 			pstmt.setString(2, hashedPassword);
 
 			ResultSet rs = pstmt.executeQuery();
-			return rs.next(); // Returns true if user exists
+			
+			 if(rs.next()){
+				 currentUserId = rs.getInt("user_id");
+				 return true;
+			 } 
+			 return false;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;

@@ -1,6 +1,14 @@
 package exshopping.view;
 
-import *;
+import exshopping.controller.AuthenticationController;
+import exshopping.controller.CartController;
+import exshopping.controller.DiscountController;
+import exshopping.controller.OrderController;
+import exshopping.model.CartItem;
+import java.awt.Dimension;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -18,6 +26,52 @@ public class AddCartFrame extends javax.swing.JFrame {
 	 */
 	public AddCartFrame() {
 		initComponents();
+		AddCartFrame();
+	}
+
+	public void AddCartFrame() {
+
+		addcart_table.setRowMargin(10); // Vertical padding
+		addcart_table.setIntercellSpacing(new Dimension(15, 10));
+		addcart_table.setRowHeight(30); // Set a specific row height
+
+		// Get the current logged-in user's ID
+		int userId = AuthenticationController.getUserId();
+
+		// Fetch cart items
+		List<CartItem> cartItems = CartController.getUserCart(userId);
+
+		// Create table model
+		DefaultTableModel model = (DefaultTableModel) addcart_table.getModel();
+		model.setRowCount(0); // Clear existing rows
+
+
+		// Variables to calculate totals
+		double subtotal = 0;
+		double discount = 0; 
+
+		// Populate table
+		for (CartItem item : cartItems) {
+			model.addRow(new Object[]{
+				item.getProductName(),
+				item.getPrice(),
+				item.getQuantity(),
+				item.getPrice() * item.getQuantity(),
+
+			});
+
+
+
+
+
+			// Calculate subtotal
+			subtotal += item.getPrice() * item.getQuantity();
+		}
+
+		// Update labels
+		subtotal_label.setText(String.format("$%.2f", subtotal));
+		discount_label.setText(String.format("$%.2f", discount));
+		total_label.setText(String.format("$%.2f", subtotal - discount));
 	}
 
 	/**
@@ -42,8 +96,8 @@ public class AddCartFrame extends javax.swing.JFrame {
         profile_btn = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         addcart_table = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        discount_input = new javax.swing.JTextField();
+        discount_btn = new javax.swing.JButton();
         jDesktopPane1 = new javax.swing.JDesktopPane();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -54,7 +108,7 @@ public class AddCartFrame extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JSeparator();
         jLabel3 = new javax.swing.JLabel();
         total_label = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        buy_btn = new javax.swing.JButton();
 
         about_btn.setText("About");
 
@@ -64,6 +118,11 @@ public class AddCartFrame extends javax.swing.JFrame {
         login_btn.setText("Ex Shopping");
 
         Home_btn.setText("Home");
+        Home_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Home_btnMouseClicked(evt);
+            }
+        });
 
         contact_btn.setText("Contact");
 
@@ -86,23 +145,28 @@ public class AddCartFrame extends javax.swing.JFrame {
 
         addcart_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Product", "Price", "Quantity", "sub-total"
+                "Product", "Price", "Quantity", "sub-total", "Action"
             }
         ));
         jScrollPane1.setViewportView(addcart_table);
 
-        jTextField1.setText("jTextField1");
+        discount_input.setText("xxx");
 
-        jButton1.setText("Apply coupon");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        discount_btn.setText("Apply coupon");
+        discount_btn.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                discount_btnMouseMoved(evt);
+            }
+        });
+        discount_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                discount_btnActionPerformed(evt);
             }
         });
 
@@ -121,10 +185,15 @@ public class AddCartFrame extends javax.swing.JFrame {
 
         total_label.setText("$1324");
 
-        jButton2.setText("Buy");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        buy_btn.setText("Buy");
+        buy_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buy_btnMouseClicked(evt);
+            }
+        });
+        buy_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                buy_btnActionPerformed(evt);
             }
         });
 
@@ -137,7 +206,7 @@ public class AddCartFrame extends javax.swing.JFrame {
         jDesktopPane1.setLayer(jSeparator4, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabel3, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(total_label, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jDesktopPane1.setLayer(jButton2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(buy_btn, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -169,7 +238,7 @@ public class AddCartFrame extends javax.swing.JFrame {
                         .addGap(35, 35, 35))))
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
                 .addGap(54, 54, 54)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(buy_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 356, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 48, Short.MAX_VALUE))
         );
         jDesktopPane1Layout.setVerticalGroup(
@@ -194,7 +263,7 @@ public class AddCartFrame extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(total_label))
                 .addGap(37, 37, 37)
-                .addComponent(jButton2)
+                .addComponent(buy_btn)
                 .addGap(27, 27, 27))
         );
 
@@ -224,9 +293,9 @@ public class AddCartFrame extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(layout.createSequentialGroup()
                             .addGap(76, 76, 76)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(discount_input, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGap(29, 29, 29)
-                            .addComponent(jButton1)
+                            .addComponent(discount_btn)
                             .addGap(230, 230, 230)
                             .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
@@ -253,8 +322,8 @@ public class AddCartFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(91, 91, 91)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1)))
+                            .addComponent(discount_input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(discount_btn)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(31, 31, 31)
                         .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -268,13 +337,55 @@ public class AddCartFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_search_inputActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void discount_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discount_btnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_discount_btnActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void buy_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buy_btnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_buy_btnActionPerformed
+
+    private void discount_btnMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_discount_btnMouseMoved
+        // TODO add your handling code here:
+		String discountCode = discount_input.getText().trim();
+
+		// Calculate subtotal
+		double subtotal = CartController.getCartTotal(AuthenticationController.getUserId());
+
+		// Validate and apply discount
+		double discountAmount = DiscountController.validateDiscount(discountCode, subtotal);
+
+		if (discountAmount > 0) {
+			// Update UI
+			discount_label.setText(String.format("$%.2f", discountAmount));
+			total_label.setText(String.format("$%.2f", subtotal - discountAmount));
+
+			JOptionPane.showMessageDialog(this, "Discount applied successfully!");
+		} else {
+			JOptionPane.showMessageDialog(this, "Invalid or expired discount code");
+			discount_label.setText("$0.00");
+			total_label.setText(String.format("$%.2f", subtotal));
+		}
+    }//GEN-LAST:event_discount_btnMouseMoved
+
+    private void buy_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buy_btnMouseClicked
+        // TODO add your handling code here:
+		int userId = AuthenticationController.getUserId();
+		int orderId = OrderController.createOrder(userId);
+
+		if (orderId != -1) {
+			JOptionPane.showMessageDialog(this, "Order placed successfully! Order ID: " + orderId);
+			CartController.clearAllCartData();
+		} else {
+			JOptionPane.showMessageDialog(this, "Failed to place order");
+		}
+    }//GEN-LAST:event_buy_btnMouseClicked
+
+    private void Home_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Home_btnMouseClicked
+        // TODO add your handling code here:
+		new HomeFrame().setVisible(true);
+		this.dispose();
+    }//GEN-LAST:event_Home_btnMouseClicked
 
 	/**
 	 * @param args the command line arguments
@@ -317,10 +428,11 @@ public class AddCartFrame extends javax.swing.JFrame {
     public javax.swing.JLabel about_btn1;
     public javax.swing.JButton addcart_btn1;
     public javax.swing.JTable addcart_table;
+    private javax.swing.JButton buy_btn;
     public javax.swing.JLabel contact_btn;
+    private javax.swing.JButton discount_btn;
+    private javax.swing.JTextField discount_input;
     public javax.swing.JLabel discount_label;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -331,7 +443,6 @@ public class AddCartFrame extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
-    private javax.swing.JTextField jTextField1;
     public javax.swing.JLabel login_btn;
     public javax.swing.JButton profile_btn;
     public javax.swing.JButton search_btn1;
@@ -339,4 +450,6 @@ public class AddCartFrame extends javax.swing.JFrame {
     public javax.swing.JLabel subtotal_label;
     public javax.swing.JLabel total_label;
     // End of variables declaration//GEN-END:variables
+
+
 }
