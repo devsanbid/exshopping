@@ -4,7 +4,7 @@
  */
 package exshopping;
 
-import exshopping.view.Profile;
+import exshopping.view.RegisterForm;
 import java.awt.Font;
 import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
@@ -20,7 +20,7 @@ public class ExShopping {
 	 * @param args the command line arguments
 	 */
 	public static void main(String[] args) {
-		Profile p = new Profile();
+		 RegisterForm p = new RegisterForm();
 		p.setVisible(true);
 		try {
 
