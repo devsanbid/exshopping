@@ -2,11 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
+
 package exshopping;
 
-import exshopping.view.RegisterForm;
+import exshopping.view.HomeFrame;
 import java.awt.Font;
-import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
@@ -14,16 +14,16 @@ import javax.swing.UIManager;
  *
  * @author sanbid
  */
+
 public class ExShopping {
 
 	/**
 	 * @param args the command line arguments
 	 */
 	public static void main(String[] args) {
-		 RegisterForm p = new RegisterForm();
+		 HomeFrame p = new HomeFrame();
 		p.setVisible(true);
 		try {
-
 			UIDefaults defaults = UIManager.getDefaults();
 
 			Font universalFont = new Font("Arial", Font.PLAIN, 28);
@@ -38,9 +38,7 @@ public class ExShopping {
 				defaults.put(component + ".font", universalFont);
 			}
 
-			SwingUtilities.updateComponentTreeUI(addcart);
-
-		}catch (Exception ex){;
+		}catch (Exception ex){
 			System.err.println("Failed to initialize LaF");
 		}
 	

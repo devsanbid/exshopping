@@ -102,6 +102,11 @@ public class HomeFrame extends javax.swing.JFrame {
         contact_btn.setText("Contact");
 
         about_btn.setText("About");
+        about_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                about_btnMouseClicked(evt);
+            }
+        });
 
         search_input.setFont(new java.awt.Font("SansSerif.plain", 0, 18)); // NOI18N
         search_input.setHorizontalAlignment(javax.swing.JTextField.LEFT);
@@ -113,10 +118,20 @@ public class HomeFrame extends javax.swing.JFrame {
         });
 
         profile_btn.setText("P");
+        profile_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                profile_btnMouseClicked(evt);
+            }
+        });
 
         search_btn1.setText("jButton1");
 
         addcart_btn1.setText("A");
+        addcart_btn1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addcart_btn1MouseClicked(evt);
+            }
+        });
 
         jButton1.setText("health");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -326,6 +341,24 @@ public class HomeFrame extends javax.swing.JFrame {
     private void addcart_product_1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addcart_product_1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_addcart_product_1ActionPerformed
+
+    private void addcart_btn1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addcart_btn1MouseClicked
+        // TODO add your handling code here:
+		new AddCartFrame().setVisible(true);
+		this.dispose();
+    }//GEN-LAST:event_addcart_btn1MouseClicked
+
+    private void profile_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profile_btnMouseClicked
+        // TODO add your handling code here:
+		new Profile().setVisible(true);
+		this.dispose();
+
+    }//GEN-LAST:event_profile_btnMouseClicked
+
+    private void about_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_about_btnMouseClicked
+        // TODO add your handling code here:
+		new ResellerFrame().setVisible(true);
+    }//GEN-LAST:event_about_btnMouseClicked
 
 	public void displayProducts() {
 		product_frame.removeAll();

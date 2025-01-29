@@ -140,6 +140,11 @@ public class AddCartFrame extends javax.swing.JFrame {
         search_btn1.setText("jButton1");
 
         addcart_btn1.setText("A");
+        addcart_btn1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addcart_btn1MouseClicked(evt);
+            }
+        });
 
         profile_btn.setText("P");
 
@@ -386,6 +391,12 @@ public class AddCartFrame extends javax.swing.JFrame {
 		new HomeFrame().setVisible(true);
 		this.dispose();
     }//GEN-LAST:event_Home_btnMouseClicked
+
+    private void addcart_btn1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addcart_btn1MouseClicked
+        // TODO add your handling code here:
+		new AddCartFrame().setVisible(true);
+		this.dispose();
+    }//GEN-LAST:event_addcart_btn1MouseClicked
 
 	/**
 	 * @param args the command line arguments
