@@ -109,18 +109,16 @@ public class ProductController {
 		}
 	}
 
-	public static void updateProduct(int productId, String productName, double price, String description, File imageFile) {
+	public static void updateProduct(int productId, String productName, double price, String description ) {
 		try (Connection conn = DatabaseConnection.getConnection()) {
-			String imagePath = processImage(imageFile);
 
-			String query = "UPDATE products SET product_name=?, price=?, description=?, image_path=? WHERE product_id=?";
+			String query = "UPDATE products SET product_name=?, price=?, description=?  WHERE product_id=?";
 			PreparedStatement pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, productName);
 			pstmt.setDouble(2, price);
 			pstmt.setString(3, description);
-			pstmt.setString(4, imagePath);
-			pstmt.setInt(5, productId);
+			pstmt.setInt(4, productId);
 
 			int result = pstmt.executeUpdate();
 			if (result > 0) {

@@ -75,4 +75,22 @@ public class AuthenticationController {
 			return new LoginResult(false, null);
 		}
 	}
+
+		public static boolean updateUser(int userId, String name, String username) {
+		try (Connection conn = DatabaseConnection.getConnection()) {
+			String query = "UPDATE users SET name = ?, username = ? WHERE id = ?";
+			PreparedStatement pstmt = conn.prepareStatement(query);
+
+			pstmt.setString(1, name);
+			pstmt.setString(2, username);
+			pstmt.setInt(3, userId);
+
+			int rowsAffected = pstmt.executeUpdate();
+			return rowsAffected > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 }

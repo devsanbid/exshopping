@@ -5,6 +5,7 @@
 package exshopping.view;
 
 import exshopping.controller.Product;
+import exshopping.controller.ProductController;
 import static exshopping.controller.ProductController.addProduct;
 import static exshopping.controller.ProductController.fetchAllProducts;
 import static exshopping.controller.ProductController.getProductById;
@@ -85,6 +86,11 @@ public class ResellerFrame extends javax.swing.JPanel {
 
         remove_btn.setFont(new java.awt.Font("Iosevka NFP SemiBold", 0, 24)); // NOI18N
         remove_btn.setText("Remove Product");
+        remove_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                remove_btnMouseClicked(evt);
+            }
+        });
 
         jLabel11.setFont(new java.awt.Font("Iosevka NFM ExtraLight", 1, 36)); // NOI18N
         jLabel11.setText("ID:");
@@ -547,10 +553,10 @@ public class ResellerFrame extends javax.swing.JPanel {
 			return;
 		}
 
-		updateProduct(currentProductId, productName, price, description, selectedImageFile);
+		ProductController.updateProduct(currentProductID, productName, price, description );
 
 		// Reset after update
-		currentProductId = -1;
+		currentProductID = -1;
 		selectedImageFile = null;
 		clearInputFields();
 		populateProductTable();
@@ -607,6 +613,13 @@ public class ResellerFrame extends javax.swing.JPanel {
 			JOptionPane.showMessageDialog(this, "Invalid Product ID", "Error", JOptionPane.ERROR_MESSAGE);
 		}
     }//GEN-LAST:event_fetch_btn1MouseClicked
+
+    private void remove_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_remove_btnMouseClicked
+        // TODO add your handling code here:
+		int currentProductID = Integer.parseInt(id_input.getText().trim());
+		ProductController.removeProduct(currentProductID);
+		
+    }//GEN-LAST:event_remove_btnMouseClicked
 
 	
 	/**

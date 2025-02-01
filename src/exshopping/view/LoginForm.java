@@ -185,6 +185,7 @@ public class LoginForm extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void search_inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_inputActionPerformed
@@ -214,6 +215,7 @@ public class LoginForm extends javax.swing.JFrame {
 					AdminPage admin = new AdminPage();
 					frame2.add(admin);
 					frame2.pack();
+					frame2.setLocationRelativeTo(null);
 					frame2.setVisible(true);
 					this.dispose();
 					break;
@@ -222,6 +224,7 @@ public class LoginForm extends javax.swing.JFrame {
 					ResellerFrame seller = new ResellerFrame();
 					frame1.add(seller);
 					frame1.pack();
+					frame1.setLocationRelativeTo(null);
 					frame1.setVisible(true);
 					this.dispose();
 					break;

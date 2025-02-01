@@ -150,6 +150,11 @@ public class AddCartFrame extends javax.swing.JFrame {
         });
 
         profile_btn.setText("");
+        profile_btn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                profile_btnMouseClicked(evt);
+            }
+        });
 
         addcart_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -339,6 +344,7 @@ public class AddCartFrame extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void search_inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search_inputActionPerformed
@@ -404,6 +410,12 @@ public class AddCartFrame extends javax.swing.JFrame {
 		new AddCartFrame().setVisible(true);
 		this.dispose();
     }//GEN-LAST:event_addcart_btn1MouseClicked
+
+    private void profile_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profile_btnMouseClicked
+        // TODO add your handling code here:
+		new Profile().setVisible(true);
+		this.dispose();
+    }//GEN-LAST:event_profile_btnMouseClicked
 
 	/**
 	 * @param args the command line arguments

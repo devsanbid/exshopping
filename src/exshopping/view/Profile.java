@@ -91,6 +91,11 @@ public class Profile extends javax.swing.JFrame {
         jLabel3.setText("My Orders");
 
         jLabel4.setText("Order list");
+        jLabel4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel4MouseClicked(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("SansSerif.plain", 1, 26)); // NOI18N
         jLabel5.setText("Edit your profile");
@@ -226,6 +231,7 @@ public class Profile extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void Home_btnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Home_btnMouseClicked
@@ -264,8 +270,7 @@ public class Profile extends javax.swing.JFrame {
 
 
 		// Update the user in the database
-		boolean isUpdated = UserController.updateUser(userId, updatedName, updatedUsername);
-				
+		boolean isUpdated = UserController.updateUser1(userId, updatedName, updatedUsername);
 
 		// Provide feedback to the user
 		if (isUpdated) {
@@ -275,6 +280,12 @@ public class Profile extends javax.swing.JFrame {
 		}
 
     }//GEN-LAST:event_save_btnMouseClicked
+
+    private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
+        // TODO add your handling code here:
+		new OrderFrame().setVisible(true);
+		this.dispose();
+    }//GEN-LAST:event_jLabel4MouseClicked
 
 	/**
 	 * @param args the command line arguments

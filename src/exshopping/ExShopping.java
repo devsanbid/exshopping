@@ -65,9 +65,12 @@ public class ExShopping {
 				UIManager.put(component, universalFont);
 			}
 
+			UIManager.put("Frame.center", Boolean.TRUE);
+
 			// Now create and show the GUI
 			SwingUtilities.invokeLater(() -> {
 				LoginForm main = new LoginForm();
+				main.setLocationRelativeTo(null); // Center the JFrame
 				main.setVisible(true);
 			});
 
