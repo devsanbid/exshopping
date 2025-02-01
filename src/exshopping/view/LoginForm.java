@@ -4,7 +4,9 @@
  */
 package exshopping.view;
 
-import static exshopping.controller.AuthenticationController.loginUser;
+import exshopping.controller.AuthenticationController;
+import exshopping.model.LoginResult;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -204,13 +206,38 @@ public class LoginForm extends javax.swing.JFrame {
 		}
 
 		// Attempt login
-		if (loginUser(username, password)) {
-			JOptionPane.showMessageDialog(this, "Login Successful!");
-			// TODO: Open main application window
-			new HomeFrame().setVisible(true);
-			this.dispose(); // Close login form
-		} else {
-			JOptionPane.showMessageDialog(this,
+		LoginResult result = AuthenticationController.loginUser(username, password);
+		if (result.isSuccess()) {
+			switch (result.getRole().toLowerCase()) {
+				case "admin":
+					JFrame frame2 = new JFrame();
+					AdminPage admin = new AdminPage();
+					frame2.add(admin);
+					frame2.pack();
+					frame2.setVisible(true);
+					this.dispose();
+					break;
+				case "reseller":
+					JFrame frame1 = new JFrame();
+					ResellerFrame seller = new ResellerFrame();
+					frame1.add(seller);
+					frame1.pack();
+					frame1.setVisible(true);
+					this.dispose();
+					break;
+				case "user":
+					new HomeFrame().setVisible(true);
+					this.dispose();
+					break;
+				default:
+					JOptionPane.showMessageDialog(null,
+							"Invalid user role",
+							"Error",
+							JOptionPane.ERROR_MESSAGE);
+
+					}
+		}else {
+			JOptionPane.showMessageDialog(null,
 					"Invalid username or password",
 					"Login Failed",
 					JOptionPane.ERROR_MESSAGE);

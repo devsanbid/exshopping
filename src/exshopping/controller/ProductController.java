@@ -57,22 +57,47 @@ public class ProductController {
 		}
 	}
 
+	public static Object[] getProductById(int productId) {
+		try (Connection conn = DatabaseConnection.getConnection()) {
+			String query = "SELECT * FROM products WHERE product_id = ?";
+			PreparedStatement pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, productId);
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				return new Object[]{
+					rs.getInt("product_id"),
+					rs.getString("product_name"),
+					rs.getDouble("price"),
+					rs.getString("description"),
+					rs.getString("image_path"),
+					rs.getDouble("stock_quantity"),
+					rs.getString("category")
+				};
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	private static String processImage(File imageFile) {
 		// Create upload directory if not exists
-		File uploadDir = new File(UPLOAD_DIR);
+		File baseDir = new File(".");
+		File uploadDir = new File(baseDir.getAbsolutePath() + "/src/exshopping/product_images/");
 		if (!uploadDir.exists()) {
 			uploadDir.mkdirs();
 		}
 
 		// Use default image if no image provided
 		if (imageFile == null) {
-			return DEFAULT_IMAGE;
+			return "demo.png";
 		}
 
 		try {
 			// Generate unique filename
 			String uniqueFileName = System.currentTimeMillis() + "_" + imageFile.getName();
-			Path targetPath = Paths.get(UPLOAD_DIR + uniqueFileName);
+			Path targetPath = Paths.get(uploadDir + uniqueFileName);
 
 			// Copy file to upload directory
 			Files.copy(imageFile.toPath(), targetPath, StandardCopyOption.REPLACE_EXISTING);

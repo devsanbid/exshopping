@@ -86,6 +86,7 @@ public class AddCartFrame extends javax.swing.JFrame {
         about_btn = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jSeparator3 = new javax.swing.JSeparator();
+        search_btn2 = new javax.swing.JButton();
         login_btn = new javax.swing.JLabel();
         Home_btn = new javax.swing.JLabel();
         contact_btn = new javax.swing.JLabel();
@@ -112,6 +113,8 @@ public class AddCartFrame extends javax.swing.JFrame {
 
         about_btn.setText("About");
 
+        search_btn2.setText("");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         login_btn.setFont(new java.awt.Font("SansSerif.plain", 1, 24)); // NOI18N
@@ -137,16 +140,16 @@ public class AddCartFrame extends javax.swing.JFrame {
             }
         });
 
-        search_btn1.setText("jButton1");
+        search_btn1.setText("");
 
-        addcart_btn1.setText("A");
+        addcart_btn1.setText("󰄐");
         addcart_btn1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 addcart_btn1MouseClicked(evt);
             }
         });
 
-        profile_btn.setText("P");
+        profile_btn.setText("");
 
         addcart_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -377,10 +380,14 @@ public class AddCartFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
 		int userId = AuthenticationController.getUserId();
 		int orderId = OrderController.createOrder(userId);
+		System.out.println("userId: " + userId);
+		System.out.println("orderId: " + orderId);
 
 		if (orderId != -1) {
 			JOptionPane.showMessageDialog(this, "Order placed successfully! Order ID: " + orderId);
 			CartController.clearAllCartData();
+	AddCartFrame();
+
 		} else {
 			JOptionPane.showMessageDialog(this, "Failed to place order");
 		}
@@ -457,6 +464,7 @@ public class AddCartFrame extends javax.swing.JFrame {
     public javax.swing.JLabel login_btn;
     public javax.swing.JButton profile_btn;
     public javax.swing.JButton search_btn1;
+    public javax.swing.JButton search_btn2;
     public javax.swing.JTextField search_input;
     public javax.swing.JLabel subtotal_label;
     public javax.swing.JLabel total_label;

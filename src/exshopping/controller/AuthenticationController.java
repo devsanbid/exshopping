@@ -9,14 +9,15 @@ package exshopping.controller;
  * @author sanbid
  */
 import exshopping.model.DatabaseConnection;
+import exshopping.model.LoginResult;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
 public class AuthenticationController {
  private static int currentUserId = 1;
-
 
 
  public static int getUserId(){
@@ -46,31 +47,32 @@ public class AuthenticationController {
 	}
 
 	// Simple password hashing (Note: Use a more secure method in production)
-	private static String hashPassword(String password) {
+	public static String hashPassword(String password) {
 		return String.valueOf(password.hashCode());
 	}
 
 	// Login Method
-	public static boolean loginUser(String username, String password) {
+	public static LoginResult loginUser(String username, String password) {
 		String hashedPassword = hashPassword(password);
-
+		System.out.println(hashedPassword);
 		try (Connection conn = DatabaseConnection.getConnection()) {
-			String query = "SELECT * FROM users WHERE username = ? AND password = ?";
+			String query = "SELECT id, name, role FROM users WHERE username = ? AND password = ?";
 			PreparedStatement pstmt = conn.prepareStatement(query);
-
 			pstmt.setString(1, username);
 			pstmt.setString(2, hashedPassword);
-
 			ResultSet rs = pstmt.executeQuery();
-			
-			 if(rs.next()){
-				 currentUserId = rs.getInt("user_id");
-				 return true;
-			 } 
-			 return false;
+
+			if (rs.next()) {
+				currentUserId = rs.getInt("id");
+				String userRole = rs.getString("role");
+
+				return new LoginResult(true, userRole);
+			} else {
+				return new LoginResult(false, null);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return false;
+			return new LoginResult(false, null);
 		}
 	}
 }

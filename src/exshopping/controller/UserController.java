@@ -44,34 +44,40 @@ public class UserController {
 	}
 
 	// Retrieve all users
-	public static List<String> getAllUsers() {
-		List<String> users = new ArrayList<>();
-
+		public static List<Object[]> getAllUsers() {
+		List<Object[]> users = new ArrayList<>();
 		try (Connection conn = DatabaseConnection.getConnection()) {
-			String query = "SELECT * FROM users";
+			String query = "SELECT id, name, username, password, created_at, role FROM users";
 			PreparedStatement pstmt = conn.prepareStatement(query);
 			ResultSet rs = pstmt.executeQuery();
-
 			while (rs.next()) {
-				String user = "ID: " + rs.getInt("id") + ", Name: " + rs.getString("name") + ", Username: " + rs.getString("username") + ", Role: " + rs.getString("role");
+				Object[] user = {
+					rs.getInt("id"),
+					rs.getString("name"),
+					rs.getString("username"),
+					rs.getString("password"),
+					rs.getTimestamp("created_at"),
+					rs.getString("role")
+				};
 				users.add(user);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-
+		};
 		return users;
 	}
 
 		// Update user details
-	public static boolean updateUser(int userId, String name, String username) {
+	public static boolean updateUser(int userId, String name, String username, String role,String password) {
 		try (Connection conn = DatabaseConnection.getConnection()) {
-			String query = "UPDATE users SET name = ?, username = ? WHERE id = ?";
+			String query = "UPDATE users SET name = ?, username = ?, role = ?, password = ? WHERE id = ?";
 			PreparedStatement pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, name);
 			pstmt.setString(2, username);
-			pstmt.setInt(3, userId);
+			pstmt.setString(3, role);
+			pstmt.setString(4, password);
+			pstmt.setInt(5, userId);
 
 			int rowsAffected = pstmt.executeUpdate();
 			return rowsAffected > 0;
@@ -111,7 +117,8 @@ public class UserController {
 					rs.getInt("id"),
 					rs.getString("name"),
 					rs.getString("username"),
-					rs.getString("password")
+					rs.getString("password"),
+					rs.getString("role")
 				};
 			}
 		} catch (SQLException e) {
